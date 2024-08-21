@@ -55,8 +55,6 @@ auto&& add_option(Option&& e, options_type&& ob)
 constexpr char alpha_numeric_pattern[] = R"_([0-9a-zA-Z_]+)_";
 constexpr char option_char_pattern[] = R"_([^;])_";
 constexpr char whitespaces_pattern[] = R"_([ \x09]+)_";
-constexpr char optional_whitespaces_pattern[] = R"_([ \x09]*)_";
-
 
 
 constexpr char_term start_option_tag('%');
@@ -64,7 +62,6 @@ constexpr char_term end_option_tag(';');
 constexpr regex_term<alpha_numeric_pattern> alpha_numeric("alpha_numeric");
 constexpr regex_term<option_char_pattern> option_char("option_char");
 constexpr regex_term<whitespaces_pattern> whitespaces("whitespace");
-constexpr regex_term<optional_whitespaces_pattern> optional_whitespaces("optional_whitespaces");
 constexpr string_term semicolon_escape(R"_(\;)_");
 
 constexpr nterm<options_type> text("text");
@@ -104,18 +101,22 @@ constexpr parser option_parser(
         option_value(semicolon_escape)
             >= [](auto o) { return std::string(";"); },
         option_value(option_value, option_char)
-            >= [](auto ov, auto v) { return ov.append(v.get_value()); },
+            >= [](auto&& ov, auto v) { return std::move(ov.append(v.get_value())); },
         option_value(option_value, semicolon_escape)
-            >= [](auto ov, auto v) { return ov.append(";"); },
+            >= [](auto&& ov, auto v) { return std::move(ov.append(";")); },
         option_value(option_value, start_option_tag)
-            >= [](auto ov, auto v) { return ov.append("%"); },
+            >= [](auto&& ov, auto v) { return std::move(ov.append("%")); },
         option_value(option_value, alpha_numeric)
-            >= [](auto ov, auto v) { return ov.append(v.get_value()); },
+            >= [](auto&& ov, auto v) { return std::move(ov.append(v.get_value())); },
         option_value(option_value, whitespaces)
-            >= [](auto ov, auto v) { return ov.append(v.get_value()); },
+            >= [](auto&& ov, auto v) { return std::move(ov.append(v.get_value())); },
         rest(alpha_numeric)
             >= [](auto r) { return 0;},
         rest(whitespaces)
+            >= [](auto r) { return 0;},
+        rest(semicolon_escape)
+            >= [](auto r) { return 0;},
+        rest(end_option_tag)
             >= [](auto r) { return 0;},
         rest(option_char)
             >= [](auto r) { return 0;},
@@ -128,9 +129,7 @@ constexpr parser option_parser(
         rest(rest, end_option_tag)
             >= [](auto r, skip) { return 0;},
         rest(rest, start_option_tag)
-            >= [](auto r, skip) { return 0;},
-        rest()
-            >=  []() { return 0;}
+            >= [](auto r, skip) { return 0;}
     )
 );
 
@@ -164,7 +163,6 @@ int main(int argc, char* argv[])
         }
     }
     for ( const std::string & line : lines) {
-        //option_parser.write_diag_str(std::cerr);
         std::cerr << "Parsing line: '" << line << "'" << std::endl;
         auto res = option_parser.parse(
             parse_options{}.set_verbose(true).set_skip_whitespace(false),
@@ -176,7 +174,7 @@ int main(int argc, char* argv[])
 
             for (const auto& w : res.value())
             {
-                std::cout <<  w.key << " (" << w.value << ")" << std::endl;
+                std::cout <<  w.key << " (" << w.value << ") pos: "<< w.start << "-" << w.end << std::endl;
             }
         }
     }

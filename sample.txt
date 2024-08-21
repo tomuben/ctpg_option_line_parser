@@ -1,1 +1,4 @@
-%Option0	abc;%Option1 ab vf; %Option2 de%f sfs; and; here % comes the rest
+%Option0	abc;%Option1 ab v \; f; %Option2 de%f sfs; and; here % comes ; the rest
+%OptionABC abc;	  %OptionDEF g; %Option2 de%f sfs; and; here % comes ; the rest
+hello world
+;%
