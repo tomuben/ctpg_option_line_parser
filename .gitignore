@@ -1,0 +1,3 @@
+./bazel-*
+.clwb/
+ctpg_test/main.cpp.safe*

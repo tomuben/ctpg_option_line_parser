@@ -1,0 +1,556 @@
+PARSER
+
+Parser Object size: 142128
+
+RULES
+
+0    text <- rest
+1    text <- options rest
+2    text <- options
+3    option_value <- alpha_numeric
+4    option_value <- option_char
+5    option_value <- whitespace
+6    option_value <- \;
+7    option_value <- option_value option_char
+8    option_value <- option_value \;
+9    option_value <- option_value alpha_numeric
+10    option_value <- option_value whitespace
+11    options <- option_element
+12    options <- options option_element
+13    option_element <- % alpha_numeric whitespace option_value ;
+14    option_element <- whitespace % alpha_numeric whitespace option_value ;
+15    rest <- alpha_numeric
+16    rest <- alpha_numeric
+17    rest <- whitespace
+18    rest <- option_char
+19    rest <- rest option_char
+20    rest <- 
+21    ## <- text
+
+STATES
+
+STATE 0
+text <- . rest ==> <eof>
+text <- . options rest ==> <eof>
+text <- . options ==> <eof>
+options <- . option_element ==> %
+options <- . option_element ==> whitespace
+options <- . option_element ==> alpha_numeric
+options <- . option_element ==> option_char
+options <- . option_element ==> <eof>
+options <- . options option_element ==> %
+options <- . options option_element ==> whitespace
+options <- . options option_element ==> alpha_numeric
+options <- . options option_element ==> option_char
+options <- . options option_element ==> <eof>
+option_element <- . % alpha_numeric whitespace option_value ; ==> %
+option_element <- . % alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- . % alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- . % alpha_numeric whitespace option_value ; ==> option_char
+option_element <- . % alpha_numeric whitespace option_value ; ==> <eof>
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> %
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> option_char
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> <eof>
+rest <- . alpha_numeric ==> option_char
+rest <- . alpha_numeric ==> <eof>
+rest <- . alpha_numeric ==> option_char
+rest <- . alpha_numeric ==> <eof>
+rest <- . whitespace ==> option_char
+rest <- . whitespace ==> <eof>
+rest <- . option_char ==> option_char
+rest <- . option_char ==> <eof>
+rest <- . rest option_char ==> option_char
+rest <- . rest option_char ==> <eof>
+rest <- . ==> option_char
+rest <- . ==> <eof>
+## <- . text ==> <eof>
+
+On text go to 1
+On options go to 3
+On option_element go to 7
+On rest go to 2
+On % shift to 10
+On whitespace shift to 5
+On alpha_numeric shift to 4
+On option_char shift to 6 S/R CONFLICT, prefer shift over reduce(20)
+On <eof> reduce using (20)
+
+STATE 1
+## <- text . ==> <eof>
+
+On <eof> success 
+
+STATE 2
+text <- rest . ==> <eof>
+rest <- rest . option_char ==> option_char
+rest <- rest . option_char ==> <eof>
+
+On option_char shift to 9
+On <eof> reduce using (0)
+
+STATE 3
+text <- options . rest ==> <eof>
+text <- options . ==> <eof>
+options <- options . option_element ==> %
+options <- options . option_element ==> whitespace
+options <- options . option_element ==> alpha_numeric
+options <- options . option_element ==> option_char
+options <- options . option_element ==> <eof>
+option_element <- . % alpha_numeric whitespace option_value ; ==> %
+option_element <- . % alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- . % alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- . % alpha_numeric whitespace option_value ; ==> option_char
+option_element <- . % alpha_numeric whitespace option_value ; ==> <eof>
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> %
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> option_char
+option_element <- . whitespace % alpha_numeric whitespace option_value ; ==> <eof>
+rest <- . alpha_numeric ==> option_char
+rest <- . alpha_numeric ==> <eof>
+rest <- . alpha_numeric ==> option_char
+rest <- . alpha_numeric ==> <eof>
+rest <- . whitespace ==> option_char
+rest <- . whitespace ==> <eof>
+rest <- . option_char ==> option_char
+rest <- . option_char ==> <eof>
+rest <- . rest option_char ==> option_char
+rest <- . rest option_char ==> <eof>
+rest <- . ==> option_char
+rest <- . ==> <eof>
+
+On option_element go to 11
+On rest go to 8
+On % shift to 10
+On whitespace shift to 5
+On alpha_numeric shift to 4
+On option_char shift to 6 S/R CONFLICT, prefer shift over reduce(20)
+On <eof> R/R CONFLICT - !!! FIX IT !!! 
+
+STATE 4
+rest <- alpha_numeric . ==> option_char
+rest <- alpha_numeric . ==> <eof>
+rest <- alpha_numeric . ==> option_char
+rest <- alpha_numeric . ==> <eof>
+
+On option_char R/R CONFLICT - !!! FIX IT !!! 
+On <eof> R/R CONFLICT - !!! FIX IT !!! 
+
+STATE 5
+option_element <- whitespace . % alpha_numeric whitespace option_value ; ==> %
+option_element <- whitespace . % alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- whitespace . % alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- whitespace . % alpha_numeric whitespace option_value ; ==> option_char
+option_element <- whitespace . % alpha_numeric whitespace option_value ; ==> <eof>
+rest <- whitespace . ==> option_char
+rest <- whitespace . ==> <eof>
+
+On % shift to 13
+On option_char reduce using (17)
+On <eof> reduce using (17)
+
+STATE 6
+rest <- option_char . ==> option_char
+rest <- option_char . ==> <eof>
+
+On option_char reduce using (18)
+On <eof> reduce using (18)
+
+STATE 7
+options <- option_element . ==> %
+options <- option_element . ==> whitespace
+options <- option_element . ==> alpha_numeric
+options <- option_element . ==> option_char
+options <- option_element . ==> <eof>
+
+On % reduce using (3)
+On whitespace reduce using (3)
+On alpha_numeric reduce using (3)
+On option_char reduce using (3)
+On <eof> reduce using (3)
+
+STATE 8
+text <- options rest . ==> <eof>
+rest <- rest . option_char ==> option_char
+rest <- rest . option_char ==> <eof>
+
+On option_char shift to 9
+On <eof> reduce using (1)
+
+STATE 9
+rest <- rest option_char . ==> option_char
+rest <- rest option_char . ==> <eof>
+
+On option_char reduce using (19)
+On <eof> reduce using (19)
+
+STATE 10
+option_element <- % . alpha_numeric whitespace option_value ; ==> %
+option_element <- % . alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- % . alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- % . alpha_numeric whitespace option_value ; ==> option_char
+option_element <- % . alpha_numeric whitespace option_value ; ==> <eof>
+
+On alpha_numeric shift to 12
+
+STATE 11
+options <- options option_element . ==> %
+options <- options option_element . ==> whitespace
+options <- options option_element . ==> alpha_numeric
+options <- options option_element . ==> option_char
+options <- options option_element . ==> <eof>
+
+On % reduce using (4)
+On whitespace reduce using (4)
+On alpha_numeric reduce using (4)
+On option_char reduce using (4)
+On <eof> reduce using (4)
+
+STATE 12
+option_element <- % alpha_numeric . whitespace option_value ; ==> %
+option_element <- % alpha_numeric . whitespace option_value ; ==> whitespace
+option_element <- % alpha_numeric . whitespace option_value ; ==> alpha_numeric
+option_element <- % alpha_numeric . whitespace option_value ; ==> option_char
+option_element <- % alpha_numeric . whitespace option_value ; ==> <eof>
+
+On whitespace shift to 14
+
+STATE 13
+option_element <- whitespace % . alpha_numeric whitespace option_value ; ==> %
+option_element <- whitespace % . alpha_numeric whitespace option_value ; ==> whitespace
+option_element <- whitespace % . alpha_numeric whitespace option_value ; ==> alpha_numeric
+option_element <- whitespace % . alpha_numeric whitespace option_value ; ==> option_char
+option_element <- whitespace % . alpha_numeric whitespace option_value ; ==> <eof>
+
+On alpha_numeric shift to 15
+
+STATE 14
+option_value <- . alpha_numeric ==> \;
+option_value <- . alpha_numeric ==> whitespace
+option_value <- . alpha_numeric ==> ;
+option_value <- . alpha_numeric ==> alpha_numeric
+option_value <- . alpha_numeric ==> option_char
+option_value <- . option_char ==> \;
+option_value <- . option_char ==> whitespace
+option_value <- . option_char ==> ;
+option_value <- . option_char ==> alpha_numeric
+option_value <- . option_char ==> option_char
+option_value <- . whitespace ==> \;
+option_value <- . whitespace ==> whitespace
+option_value <- . whitespace ==> ;
+option_value <- . whitespace ==> alpha_numeric
+option_value <- . whitespace ==> option_char
+option_value <- . \; ==> \;
+option_value <- . \; ==> whitespace
+option_value <- . \; ==> ;
+option_value <- . \; ==> alpha_numeric
+option_value <- . \; ==> option_char
+option_value <- . option_value option_char ==> \;
+option_value <- . option_value option_char ==> whitespace
+option_value <- . option_value option_char ==> ;
+option_value <- . option_value option_char ==> alpha_numeric
+option_value <- . option_value option_char ==> option_char
+option_value <- . option_value \; ==> \;
+option_value <- . option_value \; ==> whitespace
+option_value <- . option_value \; ==> ;
+option_value <- . option_value \; ==> alpha_numeric
+option_value <- . option_value \; ==> option_char
+option_value <- . option_value alpha_numeric ==> \;
+option_value <- . option_value alpha_numeric ==> whitespace
+option_value <- . option_value alpha_numeric ==> ;
+option_value <- . option_value alpha_numeric ==> alpha_numeric
+option_value <- . option_value alpha_numeric ==> option_char
+option_value <- . option_value whitespace ==> \;
+option_value <- . option_value whitespace ==> whitespace
+option_value <- . option_value whitespace ==> ;
+option_value <- . option_value whitespace ==> alpha_numeric
+option_value <- . option_value whitespace ==> option_char
+option_element <- % alpha_numeric whitespace . option_value ; ==> %
+option_element <- % alpha_numeric whitespace . option_value ; ==> whitespace
+option_element <- % alpha_numeric whitespace . option_value ; ==> alpha_numeric
+option_element <- % alpha_numeric whitespace . option_value ; ==> option_char
+option_element <- % alpha_numeric whitespace . option_value ; ==> <eof>
+
+On option_value go to 16
+On \; shift to 21
+On whitespace shift to 20
+On alpha_numeric shift to 18
+On option_char shift to 19
+
+STATE 15
+option_element <- whitespace % alpha_numeric . whitespace option_value ; ==> %
+option_element <- whitespace % alpha_numeric . whitespace option_value ; ==> whitespace
+option_element <- whitespace % alpha_numeric . whitespace option_value ; ==> alpha_numeric
+option_element <- whitespace % alpha_numeric . whitespace option_value ; ==> option_char
+option_element <- whitespace % alpha_numeric . whitespace option_value ; ==> <eof>
+
+On whitespace shift to 17
+
+STATE 16
+option_value <- option_value . option_char ==> \;
+option_value <- option_value . option_char ==> whitespace
+option_value <- option_value . option_char ==> ;
+option_value <- option_value . option_char ==> alpha_numeric
+option_value <- option_value . option_char ==> option_char
+option_value <- option_value . \; ==> \;
+option_value <- option_value . \; ==> whitespace
+option_value <- option_value . \; ==> ;
+option_value <- option_value . \; ==> alpha_numeric
+option_value <- option_value . \; ==> option_char
+option_value <- option_value . alpha_numeric ==> \;
+option_value <- option_value . alpha_numeric ==> whitespace
+option_value <- option_value . alpha_numeric ==> ;
+option_value <- option_value . alpha_numeric ==> alpha_numeric
+option_value <- option_value . alpha_numeric ==> option_char
+option_value <- option_value . whitespace ==> \;
+option_value <- option_value . whitespace ==> whitespace
+option_value <- option_value . whitespace ==> ;
+option_value <- option_value . whitespace ==> alpha_numeric
+option_value <- option_value . whitespace ==> option_char
+option_element <- % alpha_numeric whitespace option_value . ; ==> %
+option_element <- % alpha_numeric whitespace option_value . ; ==> whitespace
+option_element <- % alpha_numeric whitespace option_value . ; ==> alpha_numeric
+option_element <- % alpha_numeric whitespace option_value . ; ==> option_char
+option_element <- % alpha_numeric whitespace option_value . ; ==> <eof>
+
+On \; shift to 25
+On whitespace shift to 27
+On ; shift to 22
+On alpha_numeric shift to 26
+On option_char shift to 24
+
+STATE 17
+option_value <- . alpha_numeric ==> \;
+option_value <- . alpha_numeric ==> whitespace
+option_value <- . alpha_numeric ==> ;
+option_value <- . alpha_numeric ==> alpha_numeric
+option_value <- . alpha_numeric ==> option_char
+option_value <- . option_char ==> \;
+option_value <- . option_char ==> whitespace
+option_value <- . option_char ==> ;
+option_value <- . option_char ==> alpha_numeric
+option_value <- . option_char ==> option_char
+option_value <- . whitespace ==> \;
+option_value <- . whitespace ==> whitespace
+option_value <- . whitespace ==> ;
+option_value <- . whitespace ==> alpha_numeric
+option_value <- . whitespace ==> option_char
+option_value <- . \; ==> \;
+option_value <- . \; ==> whitespace
+option_value <- . \; ==> ;
+option_value <- . \; ==> alpha_numeric
+option_value <- . \; ==> option_char
+option_value <- . option_value option_char ==> \;
+option_value <- . option_value option_char ==> whitespace
+option_value <- . option_value option_char ==> ;
+option_value <- . option_value option_char ==> alpha_numeric
+option_value <- . option_value option_char ==> option_char
+option_value <- . option_value \; ==> \;
+option_value <- . option_value \; ==> whitespace
+option_value <- . option_value \; ==> ;
+option_value <- . option_value \; ==> alpha_numeric
+option_value <- . option_value \; ==> option_char
+option_value <- . option_value alpha_numeric ==> \;
+option_value <- . option_value alpha_numeric ==> whitespace
+option_value <- . option_value alpha_numeric ==> ;
+option_value <- . option_value alpha_numeric ==> alpha_numeric
+option_value <- . option_value alpha_numeric ==> option_char
+option_value <- . option_value whitespace ==> \;
+option_value <- . option_value whitespace ==> whitespace
+option_value <- . option_value whitespace ==> ;
+option_value <- . option_value whitespace ==> alpha_numeric
+option_value <- . option_value whitespace ==> option_char
+option_element <- whitespace % alpha_numeric whitespace . option_value ; ==> %
+option_element <- whitespace % alpha_numeric whitespace . option_value ; ==> whitespace
+option_element <- whitespace % alpha_numeric whitespace . option_value ; ==> alpha_numeric
+option_element <- whitespace % alpha_numeric whitespace . option_value ; ==> option_char
+option_element <- whitespace % alpha_numeric whitespace . option_value ; ==> <eof>
+
+On option_value go to 23
+On \; shift to 21
+On whitespace shift to 20
+On alpha_numeric shift to 18
+On option_char shift to 19
+
+STATE 18
+option_value <- alpha_numeric . ==> \;
+option_value <- alpha_numeric . ==> whitespace
+option_value <- alpha_numeric . ==> ;
+option_value <- alpha_numeric . ==> alpha_numeric
+option_value <- alpha_numeric . ==> option_char
+
+On \; reduce using (7)
+On whitespace reduce using (7)
+On ; reduce using (7)
+On alpha_numeric reduce using (7)
+On option_char reduce using (7)
+
+STATE 19
+option_value <- option_char . ==> \;
+option_value <- option_char . ==> whitespace
+option_value <- option_char . ==> ;
+option_value <- option_char . ==> alpha_numeric
+option_value <- option_char . ==> option_char
+
+On \; reduce using (8)
+On whitespace reduce using (8)
+On ; reduce using (8)
+On alpha_numeric reduce using (8)
+On option_char reduce using (8)
+
+STATE 20
+option_value <- whitespace . ==> \;
+option_value <- whitespace . ==> whitespace
+option_value <- whitespace . ==> ;
+option_value <- whitespace . ==> alpha_numeric
+option_value <- whitespace . ==> option_char
+
+On \; reduce using (9)
+On whitespace reduce using (9)
+On ; reduce using (9)
+On alpha_numeric reduce using (9)
+On option_char reduce using (9)
+
+STATE 21
+option_value <- \; . ==> \;
+option_value <- \; . ==> whitespace
+option_value <- \; . ==> ;
+option_value <- \; . ==> alpha_numeric
+option_value <- \; . ==> option_char
+
+On \; reduce using (10)
+On whitespace reduce using (10)
+On ; reduce using (10)
+On alpha_numeric reduce using (10)
+On option_char reduce using (10)
+
+STATE 22
+option_element <- % alpha_numeric whitespace option_value ; . ==> %
+option_element <- % alpha_numeric whitespace option_value ; . ==> whitespace
+option_element <- % alpha_numeric whitespace option_value ; . ==> alpha_numeric
+option_element <- % alpha_numeric whitespace option_value ; . ==> option_char
+option_element <- % alpha_numeric whitespace option_value ; . ==> <eof>
+
+On % reduce using (5)
+On whitespace reduce using (5)
+On alpha_numeric reduce using (5)
+On option_char reduce using (5)
+On <eof> reduce using (5)
+
+STATE 23
+option_value <- option_value . option_char ==> \;
+option_value <- option_value . option_char ==> whitespace
+option_value <- option_value . option_char ==> ;
+option_value <- option_value . option_char ==> alpha_numeric
+option_value <- option_value . option_char ==> option_char
+option_value <- option_value . \; ==> \;
+option_value <- option_value . \; ==> whitespace
+option_value <- option_value . \; ==> ;
+option_value <- option_value . \; ==> alpha_numeric
+option_value <- option_value . \; ==> option_char
+option_value <- option_value . alpha_numeric ==> \;
+option_value <- option_value . alpha_numeric ==> whitespace
+option_value <- option_value . alpha_numeric ==> ;
+option_value <- option_value . alpha_numeric ==> alpha_numeric
+option_value <- option_value . alpha_numeric ==> option_char
+option_value <- option_value . whitespace ==> \;
+option_value <- option_value . whitespace ==> whitespace
+option_value <- option_value . whitespace ==> ;
+option_value <- option_value . whitespace ==> alpha_numeric
+option_value <- option_value . whitespace ==> option_char
+option_element <- whitespace % alpha_numeric whitespace option_value . ; ==> %
+option_element <- whitespace % alpha_numeric whitespace option_value . ; ==> whitespace
+option_element <- whitespace % alpha_numeric whitespace option_value . ; ==> alpha_numeric
+option_element <- whitespace % alpha_numeric whitespace option_value . ; ==> option_char
+option_element <- whitespace % alpha_numeric whitespace option_value . ; ==> <eof>
+
+On \; shift to 25
+On whitespace shift to 27
+On ; shift to 28
+On alpha_numeric shift to 26
+On option_char shift to 24
+
+STATE 24
+option_value <- option_value option_char . ==> \;
+option_value <- option_value option_char . ==> whitespace
+option_value <- option_value option_char . ==> ;
+option_value <- option_value option_char . ==> alpha_numeric
+option_value <- option_value option_char . ==> option_char
+
+On \; reduce using (11)
+On whitespace reduce using (11)
+On ; reduce using (11)
+On alpha_numeric reduce using (11)
+On option_char reduce using (11)
+
+STATE 25
+option_value <- option_value \; . ==> \;
+option_value <- option_value \; . ==> whitespace
+option_value <- option_value \; . ==> ;
+option_value <- option_value \; . ==> alpha_numeric
+option_value <- option_value \; . ==> option_char
+
+On \; reduce using (12)
+On whitespace reduce using (12)
+On ; reduce using (12)
+On alpha_numeric reduce using (12)
+On option_char reduce using (12)
+
+STATE 26
+option_value <- option_value alpha_numeric . ==> \;
+option_value <- option_value alpha_numeric . ==> whitespace
+option_value <- option_value alpha_numeric . ==> ;
+option_value <- option_value alpha_numeric . ==> alpha_numeric
+option_value <- option_value alpha_numeric . ==> option_char
+
+On \; reduce using (13)
+On whitespace reduce using (13)
+On ; reduce using (13)
+On alpha_numeric reduce using (13)
+On option_char reduce using (13)
+
+STATE 27
+option_value <- option_value whitespace . ==> \;
+option_value <- option_value whitespace . ==> whitespace
+option_value <- option_value whitespace . ==> ;
+option_value <- option_value whitespace . ==> alpha_numeric
+option_value <- option_value whitespace . ==> option_char
+
+On \; reduce using (14)
+On whitespace reduce using (14)
+On ; reduce using (14)
+On alpha_numeric reduce using (14)
+On option_char reduce using (14)
+
+STATE 28
+option_element <- whitespace % alpha_numeric whitespace option_value ; . ==> %
+option_element <- whitespace % alpha_numeric whitespace option_value ; . ==> whitespace
+option_element <- whitespace % alpha_numeric whitespace option_value ; . ==> alpha_numeric
+option_element <- whitespace % alpha_numeric whitespace option_value ; . ==> option_char
+option_element <- whitespace % alpha_numeric whitespace option_value ; . ==> <eof>
+
+On % reduce using (6)
+On whitespace reduce using (6)
+On alpha_numeric reduce using (6)
+On option_char reduce using (6)
+On <eof> reduce using (6)
+
+
+LEXICAL ANALYZER
+
+STATE 0   [\x00 - \x08] -> 13  \x09 -> 7  [\x0A - \x1F] -> 13  \x20 -> 7  [! - $] -> 13  % -> 1  [& - /] -> 13  [0 - 9] -> 11  : -> 13  ; -> 9  [< - @] -> 13  [A - Z] -> 11  [ -> 13  \ -> 3  ] -> 13  ^ -> 13  _ -> 11  ` -> 13  [a - z] -> 11  [{ - \xFF] -> 13  
+STATE 1 recognized %   
+STATE 2 (unreachable) 
+STATE 3 recognized option_char   ; -> 5  
+STATE 4 (unreachable) 
+STATE 5 recognized \;   
+STATE 6 (unreachable) 
+STATE 7 recognized whitespace   \x09 -> 7  \x20 -> 7  
+STATE 8 (unreachable) 
+STATE 9 recognized ;   
+STATE 10 (unreachable) 
+STATE 11 recognized alpha_numeric   [0 - 9] -> 11  [A - Z] -> 11  _ -> 11  [a - z] -> 11  
+STATE 12 (unreachable) 
+STATE 13 recognized option_char   
